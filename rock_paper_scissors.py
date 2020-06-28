@@ -1,29 +1,31 @@
 from random import randint
-
 player_wins = 0
 computer_wins = 0
+winning_score = int(input("How many rounds do you want to play? "))
 
-rounds = int(input("How many rounds do you want to play? "))
-while player_wins < rounds and computer_wins < rounds:
-    print('''
-    ... rock...
-    ... paper...
-    ... scissors...
-    ''')
 
+def display_header():
+    print(f"Player score: {player_wins} Computer score: {computer_wins}")
+    print("...rock...")
+    print("...paper...")
+    print("...scissors...")
+
+
+def pick_computer_move():
+    moves = {
+        1: 'rock',
+        2: 'paper',
+        3: 'scissors'
+    }
     computer_number = randint(1, 3)
-    player = input("Enter Player 1's choice: ").lower()
-    if player == "quit" or player == "q":
-        break
-    if computer_number == 1:
-        computer = "rock"
-    elif computer_number == 2:
-        computer = "paper"
-    else:
-        computer = "scissors"
+    computer_choice = moves.get(computer_number)
+    print(f"The computer plays: {computer_choice}")
+    return computer_choice
 
-    print(f"Computer plays {computer}")
 
+def calculate_winner(player, computer):
+    global player_wins
+    global computer_wins
     if player != "rock" and player != "paper" and player != "scissors":
         print("You have to choose between rock, paper and scissors")
     else:
@@ -41,15 +43,27 @@ while player_wins < rounds and computer_wins < rounds:
         else:
             print("Computer wins")
             computer_wins += 1
-print("")
-if player_wins > computer_wins:
-    print(f"Player wins the best of {rounds}!")
-elif player_wins == computer_wins:
-    print("The game ended as a Tie!")
-else:
-    print(f"Computer wins the best of {rounds}!")
-print(f'''
-The score was:
-Player: {player_wins}
-Computer: {computer_wins}
-''')
+
+
+def start_game(winning_score):
+    while player_wins < winning_score and computer_wins < winning_score:
+        display_header()
+        player = input("Enter your choice: ").lower()
+        if player == 'q' or player == 'quit':
+            break
+        computer = pick_computer_move()
+        calculate_winner(player, computer)
+
+
+def display_winner():
+    if player_wins > computer_wins:
+        print("CONGRATS, YOU WON!")
+    elif player_wins == computer_wins:
+        print("IT'S A TIE!")
+    else:
+        print("OH NO! THE COMPUTER WON...")
+    print(f"Player score: {player_wins} Computer score: {computer_wins}")
+
+
+start_game(winning_score)
+display_winner()
